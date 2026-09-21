@@ -4,6 +4,9 @@ const input = document.getElementById("todo-input");
 const list = document.getElementById("todo-list");
 const emptyMsg = document.getElementById("empty-msg");
 const themeToggle = document.getElementById("theme-toggle");
+const totalCount = document.getElementById("total-count");
+const doneCount = document.getElementById("done-count");
+const remainingCount = document.getElementById("remaining-count");
 
 // ===== آرایه کارها (از LocalStorage) =====
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
@@ -27,16 +30,29 @@ themeToggle.addEventListener("click", () => {
   }
 });
 
+// ===== به‌روزرسانی شمارنده =====
+function updateStats() {
+  const total = todos.length;
+  const done = todos.filter((t) => t.done).length;
+  const remaining = total - done;
+
+  totalCount.textContent = total;
+  doneCount.textContent = done;
+  remainingCount.textContent = remaining;
+}
+
 // ===== نمایش کارها =====
 function renderTodos() {
   list.innerHTML = "";
 
   if (todos.length === 0) {
     emptyMsg.classList.remove("hidden");
+    updateStats();
     return;
   }
 
   emptyMsg.classList.add("hidden");
+  updateStats();
 
   todos.forEach((todo, index) => {
     const li = document.createElement("li");

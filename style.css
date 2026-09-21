@@ -177,3 +177,25 @@ h1 {
   transform: rotate(20deg) scale(1.1);
   border-color: var(--primary);
 }
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px;
+  background: var(--item-bg);
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: var(--text-main);
+  transition: all 0.3s;
+}
+
+.stats strong {
+  color: var(--primary);
+  font-size: 16px;
+}
+
+.stats span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
