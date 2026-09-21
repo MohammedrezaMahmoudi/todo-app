@@ -227,3 +227,22 @@ h1 {
   color: white;
   border-color: var(--primary);
 }
+
+.clear-all {
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background: transparent;
+  color: var(--danger);
+  border: 2px solid var(--danger);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.clear-all:hover {
+  background: var(--danger);
+  color: white;
+}

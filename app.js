@@ -8,6 +8,7 @@ const totalCount = document.getElementById("total-count");
 const doneCount = document.getElementById("done-count");
 const remainingCount = document.getElementById("remaining-count");
 const filterButtons = document.querySelectorAll(".filter-btn");
+const clearAllBtn = document.getElementById("clear-all");
 
 // ===== آرایه کارها (از LocalStorage) =====
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
@@ -42,6 +43,19 @@ filterButtons.forEach((btn) => {
 
     renderTodos();
   });
+});
+
+// ===== پاک کردن همه =====
+clearAllBtn.addEventListener("click", () => {
+  if (todos.length === 0) return;
+
+  const confirmDelete = confirm("مطمئنی می‌خوای همه کارها رو پاک کنی؟");
+
+  if (confirmDelete) {
+    todos = [];
+    saveTodos();
+    renderTodos();
+  }
 });
 
 // ===== به‌روزرسانی شمارنده =====
@@ -130,3 +144,11 @@ function saveTodos() {
 
 // ===== نمایش اولیه =====
 renderTodos();
+
+// ===== همگام‌سازی بین تب‌ها =====
+window.addEventListener("storage", (e) => {
+  if (e.key === "todos") {
+    todos = JSON.parse(e.newValue) || [];
+    renderTodos();
+  }
+});
