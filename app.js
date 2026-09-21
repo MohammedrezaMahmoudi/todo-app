@@ -7,9 +7,11 @@ const themeToggle = document.getElementById("theme-toggle");
 const totalCount = document.getElementById("total-count");
 const doneCount = document.getElementById("done-count");
 const remainingCount = document.getElementById("remaining-count");
+const filterButtons = document.querySelectorAll(".filter-btn");
 
 // ===== آرایه کارها (از LocalStorage) =====
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let currentFilter = "all";
 
 // ===== حالت تاریک =====
 const savedTheme = localStorage.getItem("theme");
@@ -30,6 +32,18 @@ themeToggle.addEventListener("click", () => {
   }
 });
 
+// ===== فیلتر =====
+filterButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    currentFilter = btn.dataset.filter;
+
+    filterButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    renderTodos();
+  });
+});
+
 // ===== به‌روزرسانی شمارنده =====
 function updateStats() {
   const total = todos.length;
@@ -45,7 +59,15 @@ function updateStats() {
 function renderTodos() {
   list.innerHTML = "";
 
-  if (todos.length === 0) {
+  let filteredTodos = todos;
+
+  if (currentFilter === "active") {
+    filteredTodos = todos.filter((t) => !t.done);
+  } else if (currentFilter === "done") {
+    filteredTodos = todos.filter((t) => t.done);
+  }
+
+  if (filteredTodos.length === 0) {
     emptyMsg.classList.remove("hidden");
     updateStats();
     return;
@@ -54,7 +76,9 @@ function renderTodos() {
   emptyMsg.classList.add("hidden");
   updateStats();
 
-  todos.forEach((todo, index) => {
+  filteredTodos.forEach((todo) => {
+    const index = todos.indexOf(todo);
+
     const li = document.createElement("li");
     li.className = "todo-item";
     if (todo.done) li.classList.add("done");
