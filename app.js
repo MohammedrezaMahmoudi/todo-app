@@ -1,13 +1,33 @@
-// گرفتن عناصر
+// ===== گرفتن عناصر =====
 const form = document.getElementById("todo-form");
 const input = document.getElementById("todo-input");
 const list = document.getElementById("todo-list");
 const emptyMsg = document.getElementById("empty-msg");
+const themeToggle = document.getElementById("theme-toggle");
 
-// آرایه کارها (از LocalStorage می‌خونیم)
+// ===== آرایه کارها (از LocalStorage) =====
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 
-// نمایش کارها
+// ===== حالت تاریک =====
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "dark") {
+  document.body.classList.add("dark");
+  themeToggle.textContent = "☀️";
+}
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  if (document.body.classList.contains("dark")) {
+    themeToggle.textContent = "☀️";
+    localStorage.setItem("theme", "dark");
+  } else {
+    themeToggle.textContent = "🌙";
+    localStorage.setItem("theme", "light");
+  }
+});
+
+// ===== نمایش کارها =====
 function renderTodos() {
   list.innerHTML = "";
 
@@ -37,7 +57,7 @@ function renderTodos() {
   });
 }
 
-// اضافه کردن کار
+// ===== اضافه کردن کار =====
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const text = input.value.trim();
@@ -49,24 +69,24 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 });
 
-// تیک زدن
+// ===== تیک زدن =====
 function toggleTodo(index) {
   todos[index].done = !todos[index].done;
   saveTodos();
   renderTodos();
 }
 
-// حذف
+// ===== حذف =====
 function deleteTodo(index) {
   todos.splice(index, 1);
   saveTodos();
   renderTodos();
 }
 
-// ذخیره در LocalStorage
+// ===== ذخیره در LocalStorage =====
 function saveTodos() {
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// نمایش اولیه
+// ===== نمایش اولیه =====
 renderTodos();
